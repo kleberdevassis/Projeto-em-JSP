@@ -4,9 +4,10 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>tela que mostra os erros</title>
+
 </head>
 <body>
-
+<h1>Mensagem de Erro, entre em contato com a equipe de suporte do sistema</h1>
 </body>
 </html>
