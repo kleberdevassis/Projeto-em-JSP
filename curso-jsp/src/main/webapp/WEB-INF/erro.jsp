@@ -9,5 +9,11 @@
 </head>
 <body>
 <h1>Mensagem de Erro, entre em contato com a equipe de suporte do sistema</h1>
+
+<%
+out.print(request.getAtribute("msg"));
+
+%>
+
 </body>
 </html>
