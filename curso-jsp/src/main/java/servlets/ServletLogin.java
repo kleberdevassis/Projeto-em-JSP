@@ -28,7 +28,7 @@ public class ServletLogin extends HttpServlet {
 
     /*Recebe os dados pela url em parametros*/
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+       doPost(request, response);
 	}
 
 	
@@ -43,7 +43,7 @@ public class ServletLogin extends HttpServlet {
 		
 				if (login != null && !login.isEmpty() && senha != null && !senha.isEmpty()) {
 					
-					ModelLogin modelLogin = null; //new ModelLogin();
+					ModelLogin modelLogin = new ModelLogin();
 					modelLogin.setLogin(login);
 					modelLogin.setSenha(senha);
 					
