@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 
-      <!-- Page-header start -->
-                      <div class="page-header">
+
+  <div class="page-header">
                           <div class="page-block">
                               <div class="row align-items-center">
                                   <div class="col-md-8">
@@ -22,5 +22,4 @@
                                   </div>
                               </div>
                           </div>
-                      </div>
-                      <!-- Page-header end -->
+                      </div> 
