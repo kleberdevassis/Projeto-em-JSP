@@ -79,7 +79,7 @@ h5 {
 
 	</form>
 
-	<h5 class="msg">${msg}</h3>
+	<h5 class="msg">${msg}</h5>
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
