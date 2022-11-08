@@ -46,4 +46,8 @@ alter table model_login alter column senha set not null;
 
 select * from model_login where login = 'admin'
 
+select count(1) from model_login where upper(login) = upper('admin')
+
+select count(1) > 0 from model_login where upper(login) = upper('admin')
+
 

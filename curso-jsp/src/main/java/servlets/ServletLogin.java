@@ -12,17 +12,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.ModelLogin;
 
 
-/*O chamando Controller s√£o as servlets ou ServletLoginController*/
+/*O chamando Controller s„o as servlets ou ServletLoginController*/
 @WebServlet(urlPatterns = {"/principal/ServletLogin", "/ServletLogin"}) /*Mapeamento de URL que vem da tela*/
 public class ServletLogin extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	
-	
 	private DAOLoginRepository daoLoginRepository = new DAOLoginRepository();
 
   
-	public ServletLogin() {
+    public ServletLogin() {
     }
 
 
@@ -30,20 +29,16 @@ public class ServletLogin extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		
-		String acao = request.getParameter("acao");
-		
-		if(acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("logout")) {
-			request.getSession().invalidate();
-			RequestDispatcher redirecionar =  request.getRequestDispatcher("index.jsp");
-			redirecionar.forward(request, response);
-			
-		} else {
-			
-			doPost(request, response);
-			
-		}
-       
-       
+		 String acao = request.getParameter("acao");
+		 
+		 if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("logout")) {
+			 request.getSession().invalidate();// invalida a sess„o
+			 RequestDispatcher redirecionar = request.getRequestDispatcher("index.jsp");
+			 redirecionar.forward(request, response);
+		 }else {
+		  doPost(request, response);
+		 }
+		 
 	}
 
 	
