@@ -99,9 +99,9 @@ public class DAOUsuarioRepository {
 		
 		prepareSql.setLong(1, Long.parseLong(idUser));
 		
-		prepareSql.executeUpdate(sql);
-		connection.commit();
+		prepareSql.executeUpdate();
 		
+		connection.commit();
 		
 	}
 
