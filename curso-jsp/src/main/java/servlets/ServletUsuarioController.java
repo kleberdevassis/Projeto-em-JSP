@@ -96,7 +96,7 @@ public class ServletUsuarioController extends HttpServlet {
 		
 		
 		request.setAttribute("msg", msg);
-		request.setAttribute("modolLogin", modelLogin);
+		request.setAttribute("modelLogin", modelLogin);
 		request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 		
 		} catch (Exception e) {

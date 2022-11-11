@@ -80,9 +80,9 @@
 																	class="form-control" required="required" autocomplete="off" value="${modelLogin.senha}"> <span
 																	class="form-bar"></span> <label class="float-label">Senha</label>
 															</div>
-															<button type="button" class="btn btn-primary waves-effect waves-light" onclik="limparForm();">Novo</button>
+															<button type="button" class="btn btn-primary waves-effect waves-light" onclick="limparForm();">Novo</button>
 															<button type="submit" class="btn btn-success waves-effect waves-light">Salvar</button>
-															<button type="button" class="btn btn-info waves-effect waves-light" onclik= " criarDeleteComAjax();">Excluir</button>
+															<button type="button" class="btn btn-info waves-effect waves-light" onclick="criarDeleteComAjax();">Excluir</button>
 															<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalUsuario">Pesquisar</button>
 
 														</form>
@@ -167,7 +167,7 @@
 	
 	function limparForm() {
 		var elementos = document.getElementById("formUser").elements; /*retorna os elementos html dentro do form*/
-		for(p = 0; p < elementos.lenght; p++){
+		for(p = 0; p < elementos.lenght; p ++){
 			elementos[p].value = '';
 			
 		}
