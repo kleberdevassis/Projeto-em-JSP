@@ -80,6 +80,7 @@
 																	class="form-control" required="required" autocomplete="off" value="${modelLogin.senha}"> <span
 																	class="form-bar"></span> <label class="float-label">Senha</label>
 															</div>
+															
 															<button type="button" class="btn btn-primary waves-effect waves-light" onclick="limparForm();">Novo</button>
 															<button type="submit" class="btn btn-success waves-effect waves-light">Salvar</button>
 															<button type="button" class="btn btn-info waves-effect waves-light" onclick="criarDeleteComAjax();">Excluir</button>
@@ -119,7 +120,30 @@
         </button>
       </div>
       <div class="modal-body">
-        ...
+      
+         <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Nome" aria-label="nome" id="nomeBusca" aria-describedby="basic-addon2">
+          <div class="input-group-append">
+          <button class="btn btn-success" type="button" onclick="buscarUsuario();">Buscar</button>
+          </div>
+        </div>
+        
+        <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Nome</th>
+      <th scope="col">Ver</th>
+    </tr>	
+  </thead>
+  <tbody>
+  
+  
+    
+  </tbody>
+</table>
+        
+        
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
@@ -129,6 +153,33 @@
 </div>
 	
 	<script type="text/javascript">
+	
+	function buscarUsuario(){
+		
+		var nomeBusca = document.getElementById('nomeBusca').value;
+		
+		if(nomeBusca != null && nomeBusca != '' && nomeBusca.trim() != ''){
+			
+			var urlAction = document.getElementById('formUser').action;
+			
+            $.ajax({
+				
+				method:"get", 
+				url : urlAction, 
+				data : "nomeBusca=" + nomeBusca + '&acao=buscarUserAjax',
+				success : function(response) {
+					alert(response)
+				}
+				
+			}).fail(function(xhr, status, errorThrown){
+				alert('erro ao buscar o usuario por nome: '+ xhr.responseText);
+			});
+	
+			
+			
+		}
+		
+	}
 	
 	function criarDeleteComAjax(){
 		if(confirm('deseja realmente excluir os dados?')){
@@ -167,7 +218,7 @@
 	
 	function limparForm() {
 		var elementos = document.getElementById("formUser").elements; /*retorna os elementos html dentro do form*/
-		for(p = 0; p < elementos.lenght; p ++){
+		for(p = 0; p < elementos.length; p ++){
 			elementos[p].value = '';
 			
 		}
