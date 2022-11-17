@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+	
+	<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 
 
 <!DOCTYPE html>
@@ -110,76 +112,98 @@
 
 	<jsp:include page="javascriptfile.jsp"></jsp:include>
 	
-	<div class="modal fade" id="exampleModalUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal fade" id="exampleModalUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Pesquisa de Usuario</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Pesquisa de usuário</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-      
-         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Nome" aria-label="nome" id="nomeBusca" aria-describedby="basic-addon2">
-          <div class="input-group-append">
-          <button class="btn btn-success" type="button" onclick="buscarUsuario();">Buscar</button>
-          </div>
-        </div>
-        
-        <table class="table">
+
+	<div class="input-group mb-3">
+	  <input type="text" class="form-control" placeholder="Nome" aria-label="nome" id="nomeBusca" aria-describedby="basic-addon2">
+	  <div class="input-group-append">
+	    <button class="btn btn-success" type="button" onclick="buscarUsuario();">Buscar</button>
+	  </div>
+	</div>
+	
+<div style="height: 300px;overflow: scroll;" >	
+	<table class="table" id="tabelaresultados">
   <thead>
     <tr>
-      <th scope="col">Id</th>
+      <th scope="col">ID</th>
       <th scope="col">Nome</th>
       <th scope="col">Ver</th>
-    </tr>	
+    </tr>
   </thead>
   <tbody>
-  
-  
     
   </tbody>
 </table>
-        
-        
-      </div>
+</div>
+<span id="totalResultados"></span>
+	
+	  </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
       </div>
     </div>
   </div>
 </div>
+
+
+<script type="text/javascript">
+
+
+function verEditar(id) {
+   
+    var urlAction = document.getElementById('formUser').action;
+    
+    
+    window.location.href = urlAction + '?acao=buscarEditar&id='+id;
+    
+}
+
+
+function buscarUsuario() {
+    
+    var nomeBusca = document.getElementById('nomeBusca').value;
+    
+    if (nomeBusca != null && nomeBusca != '' && nomeBusca.trim() != ''){ /*Validando que tem que ter valor pra buscar no banco*/
 	
-	<script type="text/javascript">
+	 var urlAction = document.getElementById('formUser').action;
 	
-	function buscarUsuario(){
-		
-		var nomeBusca = document.getElementById('nomeBusca').value;
-		
-		if(nomeBusca != null && nomeBusca != '' && nomeBusca.trim() != ''){
-			
-			var urlAction = document.getElementById('formUser').action;
-			
-            $.ajax({
-				
-				method:"get", 
-				url : urlAction, 
-				data : "nomeBusca=" + nomeBusca + '&acao=buscarUserAjax',
-				success : function(response) {
-					alert(response)
-				}
-				
-			}).fail(function(xhr, status, errorThrown){
-				alert('erro ao buscar o usuario por nome: '+ xhr.responseText);
-			});
+	 $.ajax({
+	     
+	     method: "get",
+	     url : urlAction,
+	     data : "nomeBusca=" + nomeBusca + '&acao=buscarUserAjax',
+	     success: function (response) {
+		 
+		 var json = JSON.parse(response);
+		 
+		 
+		 $('#tabelaresultados > tbody > tr').remove();
+		 
+		  for(var p = 0; p < json.length; p++){
+		      $('#tabelaresultados > tbody').append('<tr> <td>'+json[p].id+'</td> <td> '+json[p].nome+'</td> <td><button onclick="verEditar('+json[p].id+')" type="button" class="btn btn-info">Ver</button></td></tr>');
+		  }
+		  
+		  document.getElementById('totalResultados').textContent = 'Resultados: ' + json.length;
+		 
+	     }
+	     
+	 }).fail(function(xhr, status, errorThrown){
+	    alert('Erro ao buscar usuário por nome: ' + xhr.responseText);
+	 });
 	
-			
-			
-		}
-		
-	}
+	
+    }
+    
+}
 	
 	function criarDeleteComAjax(){
 		if(confirm('deseja realmente excluir os dados?')){
