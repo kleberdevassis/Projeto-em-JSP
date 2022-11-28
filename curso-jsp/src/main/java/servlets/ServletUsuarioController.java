@@ -68,18 +68,18 @@ public class ServletUsuarioController extends ServletGenericUtil {
     		 }
     		 
     		 else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarEditar")) {
-    			
-    			    String id = request.getParameter("id");
-    			 
-    			     ModelLogin modelLogin = daoUsuarioRepository.consultaUsuarioID(id,super.getUserLogado(request));
-    			 
-    			     List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
-    			     request.setAttribute("modelLogins", modelLogins);
-    			     
-    			    request.setAttribute("msg", "Usuário em edição");
-    				request.setAttribute("modolLogin", modelLogin);
-    				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
-    		 }
+    				
+ 			    String id = request.getParameter("id");
+ 			 
+ 			     ModelLogin modelLogin = daoUsuarioRepository.consultaUsuarioID(id, super.getUserLogado(request));
+ 			 
+ 			     List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
+ 			     request.setAttribute("modelLogins", modelLogins);
+ 			     
+ 			    request.setAttribute("msg", "Usuário em edição");
+ 				request.setAttribute("modolLogin", modelLogin);
+ 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+ 		 }
     		 
     		 else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("listarUser")) {
     			 
@@ -120,6 +120,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
     		String email = request.getParameter("email");
     		String login = request.getParameter("login");
     		String senha = request.getParameter("senha");
+    		String perfil = request.getParameter("perfil");
     		
     		ModelLogin modelLogin = new ModelLogin();
     		
@@ -128,6 +129,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
     		modelLogin.setEmail(email);
     		modelLogin.setLogin(login);
     		modelLogin.setSenha(senha);
+    		modelLogin.setPerfil(perfil);
     		
     		
     		if (daoUsuarioRepository.validarLogin(modelLogin.getLogin()) && modelLogin.getId() == null) {

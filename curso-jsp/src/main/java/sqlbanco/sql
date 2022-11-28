@@ -46,8 +46,25 @@ alter table model_login alter column senha set not null;
 
 select * from model_login where login = 'admin'
 
-select count(1) from model_login where upper(login) = upper('admin')
 
+tornando admin o usuario administrador
+select count(1) from model_login where upper(login) = upper('admin')
 select count(1) > 0 from model_login where upper(login) = upper('admin')
+
+definindo coluna de usuario administrador
+alter table model_login add column useradmin boolean not null default false:
+
+criando nova coluna e escolhendo um padrao de usuario no caso o admin de id 1
+alter table model_login add column usuario_id bigint not null default 1;
+
+colocando uma chave estrangeira e uma restrição onde qualquer cadastro vai apontar para o usuario logado que o criou
+alter talbe model_login add constraint usuario_fk foreign key (usuario_id) references model_login (id);
+
+mudando de usuario logado
+update model_login set usuario_id = 19 where id > 12
+
+adicionando coluna de perfil de usuario 
+alter table model_login add column perfil character varying(200);
+
 
 
