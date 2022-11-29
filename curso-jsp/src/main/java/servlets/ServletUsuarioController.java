@@ -8,12 +8,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.DAOUsuarioRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.ModelLogin;
 
+@MultipartConfig // necessario para fazer o upload
 @WebServlet(urlPatterns={"/ServletUsuarioController"})
 public class ServletUsuarioController extends ServletGenericUtil {
 	
@@ -121,6 +123,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
     		String login = request.getParameter("login");
     		String senha = request.getParameter("senha");
     		String perfil = request.getParameter("perfil");
+    		String sexo = request.getParameter("sexo");
     		
     		ModelLogin modelLogin = new ModelLogin();
     		
@@ -130,6 +133,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
     		modelLogin.setLogin(login);
     		modelLogin.setSenha(senha);
     		modelLogin.setPerfil(perfil);
+    		modelLogin.setSexo(sexo);
     		
     		
     		if (daoUsuarioRepository.validarLogin(modelLogin.getLogin()) && modelLogin.getId() == null) {

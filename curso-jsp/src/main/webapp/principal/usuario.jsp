@@ -48,7 +48,8 @@
                                                     <div class="card-block">
                                                         <h4 class="sub-title">Cad. Usuário</h4>
 		                                              
-          												 <form class="form-material" action="<%= request.getContextPath() %>/ServletUsuarioController" method="post" id="formUser" >
+		                                                                         <!-- enctype necessário para fazer o upload -->
+          												 <form class="form-material" enctype="multipart/form-data" action="<%= request.getContextPath() %>/ServletUsuarioController" method="post" id="formUser" >
           												    
           												    <input type="hidden" name="acao" id="acao" value="">
           												 
@@ -56,6 +57,14 @@
                                                                 <input type="text" name="id" id="id" class="form-control"  readonly="readonly" value="${modolLogin.id}">
                                                                 <span class="form-bar"></span>
                                                                 <label class="float-label">ID:</label>
+                                                            </div>
+                                                            
+                                                            <div class="form-group form-default input-group mb-4">
+                                                            <div class= "input-group-prepend">
+                                                            <img alt="Imagem user" src="https://cdn.pixabay.com/photo/2015/04/02/17/56/iron-man-704074_960_720.jpg" width ="70px">
+                                                            <input type="file"  class="form-control-file" style="margin-top:15px; margin-left:5px;"> 
+                                                            
+                                                            </div>
                                                             </div>
                                                             
                                                               <div class="form-group form-default form-static-label">
@@ -77,18 +86,17 @@
 																aria-label="Default select example" name="perfil" >
 																<option disabled="disabled" >[Selecione o Perfil]</option>
 																
-																<option value="ADMIN" <% 
 																
+																<option value="ADMIN" <% 
 																
 																ModelLogin modelLogin = (ModelLogin) request.getAttribute("modolLogin");
 																
-																
 																if (modelLogin != null && modelLogin.getPerfil().equals("ADMIN")) {
 																		out.print(" ");
-																		 out.print("selected=\"selected\"");
+																		 out.print("selected=\"selected\""); 
 																		out.print(" ");
 																} %> >Admin</option>
-																
+																 
 																<option value="SECRETARIA" <% 
 																		
 																   modelLogin = (ModelLogin) request.getAttribute("modolLogin");
@@ -124,6 +132,27 @@
                                                                 <input type="password" name="senha" id="senha" class="form-control" required="required" autocomplete="off" value="${modolLogin.senha}">
                                                                 <span class="form-bar"></span>
                                                                 <label class="float-label">Senha</label>
+                                                            </div>
+                                                            
+                                                            <div class="form-group form-default form-static-label">
+                                                            <input type="radio" name="sexo" checked="checked" value="MASCULINO"<% 
+																	modelLogin = (ModelLogin) request.getAttribute("modolLogin");
+																				
+																	if (modelLogin != null && modelLogin.getSexo().equals("MASCULINO")) {
+																		out.print(" ");
+																		 out.print("checked=\"checked\"");
+																		out.print(" ");
+																} %>>Masculino</>
+                                                            <input type="radio" name="sexo" value="FEMININO"<% 
+																	modelLogin = (ModelLogin) request.getAttribute("modolLogin");
+																				
+																	if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
+																		out.print(" ");
+																		 out.print("checked=\"checked\"");
+																		out.print(" ");
+																} %>>Feminino</>
+                                                            
+                                                            
                                                             </div>
                                                             
                                                             

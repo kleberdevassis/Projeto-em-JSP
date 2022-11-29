@@ -66,5 +66,12 @@ update model_login set usuario_id = 19 where id > 12
 adicionando coluna de perfil de usuario 
 alter table model_login add column perfil character varying(200);
 
+mudando toda a coluna perfil para auxiliar
+update model_login set perfil = 'AUXILIAR' where perfil is null;
+
+criando colunas para foto
+alter table model_login add column fotouser text;
+alter table model_login add column extensaofotouser character varying(10);
+
 
 
