@@ -48,7 +48,7 @@
                                                     <div class="card-block">
                                                         <h4 class="sub-title">Cad. Usuário</h4>
 		                                              
-		                                                                         <!-- enctype necessário para fazer o upload -->
+		                                                                         <!-- enctype necessário para fazer o upload de imagem-->
           												 <form class="form-material" enctype="multipart/form-data" action="<%= request.getContextPath() %>/ServletUsuarioController" method="post" id="formUser" >
           												    
           												    <input type="hidden" name="acao" id="acao" value="">
@@ -59,12 +59,14 @@
                                                                 <label class="float-label">ID:</label>
                                                             </div>
                                                             
+                                                            <!-- upload de imagem-->
                                                             <div class="form-group form-default input-group mb-4">
                                                             <div class= "input-group-prepend">
-                                                            <img alt="Imagem user" src="https://cdn.pixabay.com/photo/2015/04/02/17/56/iron-man-704074_960_720.jpg" width ="70px">
-                                                            <input type="file"  class="form-control-file" style="margin-top:15px; margin-left:5px;"> 
+                                                            <img alt="Imagem user" id="fotoembase64" src="" width ="70px">
+                                                            </div>                     <!-- onchange função para substituir imagem do fotoembase64 para imagem escolhida no fileFoto-->
+                                                            <input type="file" id="fileFoto" name= "fileFoto" accept="image/*" onchange="visualizarImg('fotoembase64','fileFoto')" class="form-control-file" style="margin-top:15px; margin-left:5px;"> 
                                                             
-                                                            </div>
+                                                            
                                                             </div>
                                                             
                                                               <div class="form-group form-default form-static-label">
@@ -249,6 +251,27 @@
 
 
 <script type="text/javascript">
+
+
+function visualizarImg(fotoembase64, fileFoto) {
+	
+	var preview = document.getElementById(fotoembase64) // campo IMG html
+	var fileUser = document.getElementById(fileFoto).files[0];
+	var reader = new FileReader();
+	
+	reader.onloadend = function () {
+		preview.src = reader.result; // carrega a foto na tela
+	};
+	
+	if(fileUser){
+		reader.readAsDataURL(fileUser); // Preview da imagem
+	} else {
+		preview.src =  ' ';
+	}
+	
+	
+	
+}
 
 
 function verEditar(id) {
