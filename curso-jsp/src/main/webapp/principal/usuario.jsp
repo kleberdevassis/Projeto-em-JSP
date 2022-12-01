@@ -61,13 +61,20 @@
                                                             
                                                             <!-- upload de imagem-->
                                                             <div class="form-group form-default input-group mb-4">
-                                                            <div class= "input-group-prepend">
-                                                            <img alt="Imagem user" id="fotoembase64" src="" width ="70px">
-                                                            </div>                     <!-- onchange função para substituir imagem do fotoembase64 para imagem escolhida no fileFoto-->
-                                                            <input type="file" id="fileFoto" name= "fileFoto" accept="image/*" onchange="visualizarImg('fotoembase64','fileFoto')" class="form-control-file" style="margin-top:15px; margin-left:5px;"> 
-                                                            
-                                                            
-                                                            </div>
+                                                                  <div class="input-group-prepend">
+                                                                    <c:if test="${modolLogin.fotouser != '' && modolLogin.fotouser != null}">
+                                                                       <a href="<%= request.getContextPath()%>/ServletUsuarioController?acao=downloadFoto&id=${modolLogin.id}">
+	                                                                     <img alt="Imagem User" id="fotoembase64" src="${modolLogin.fotouser}" width="70px">
+	                                                                    </a>
+                                                                    </c:if>
+                                                                    
+                                                                    <c:if test="${modolLogin.fotouser == '' || modolLogin.fotouser == null}">
+                                                                       <img alt="Imagem User" id="fotoembase64"  src="assets/images/user.png" width="70px">
+                                                        			</c:if>
+                                                        			
+                                                                  </div>
+                                                                  <input type="file" id="fileFoto" name="fileFoto" accept="image/*" onchange="visualizarImg('fotoembase64', 'fileFoto');" class="form-control-file" style="margin-top: 15px; margin-left: 5px;">
+                                                             </div>
                                                             
                                                               <div class="form-group form-default form-static-label">
                                                                 <input type="text" name="nome" id="nome" class="form-control" required="required" value="${modolLogin.nome}">
@@ -253,24 +260,23 @@
 <script type="text/javascript">
 
 
-function visualizarImg(fotoembase64, fileFoto) {
-	
-	var preview = document.getElementById(fotoembase64) // campo IMG html
-	var fileUser = document.getElementById(fileFoto).files[0];
-	var reader = new FileReader();
-	
-	reader.onloadend = function () {
-		preview.src = reader.result; // carrega a foto na tela
-	};
-	
-	if(fileUser){
-		reader.readAsDataURL(fileUser); // Preview da imagem
-	} else {
-		preview.src =  ' ';
-	}
-	
-	
-	
+function visualizarImg(fotoembase64, filefoto) {
+    
+    
+    var preview = document.getElementById(fotoembase64); // campo IMG html
+    var fileUser = document.getElementById(filefoto).files[0];
+    var reader = new FileReader();
+    
+    reader.onloadend = function (){
+	    preview.src = reader.result; /*Carrega a foto na tela*/
+    };
+    
+    if (fileUser) {
+	  reader.readAsDataURL(fileUser); /*Preview da imagem*/
+    }else {
+	 preview.src=  '';
+    }
+    
 }
 
 
