@@ -73,5 +73,11 @@ criando colunas para foto
 alter table model_login add column fotouser text;
 alter table model_login add column extensaofotouser character varying(10);
 
+limitando a paginação em 5 registros
+select * from model_login where usuario_id = 1 order by nome offset 0 limit 5
+
+definindo contagem de 1 para cada informação do usuario logado e definindo como total
+select count(1) as total from model_login where usuario_id = " + userLogado
+
 
 
