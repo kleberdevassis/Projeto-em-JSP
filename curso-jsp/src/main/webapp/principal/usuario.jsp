@@ -1,10 +1,10 @@
 <%@page import="model.ModelLogin"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=UTF-8" 
 	pageEncoding="ISO-8859-1"%>
 	
 	<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 
-
+ <!-- charset=UTF-8 resolveu o problema com os acentos -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -60,7 +60,7 @@
                                                             </div>
                                                             
                                                             <!-- upload de imagem-->
-                                                            <div class="form-group form-default input-group mb-4">
+                                                           <div class="form-group form-default input-group mb-4">
                                                                   <div class="input-group-prepend">
                                                                     <c:if test="${modolLogin.fotouser != '' && modolLogin.fotouser != null}">
                                                                        <a href="<%= request.getContextPath()%>/ServletUsuarioController?acao=downloadFoto&id=${modolLogin.id}">
@@ -75,6 +75,7 @@
                                                                   </div>
                                                                   <input type="file" id="fileFoto" name="fileFoto" accept="image/*" onchange="visualizarImg('fotoembase64', 'fileFoto');" class="form-control-file" style="margin-top: 15px; margin-left: 5px;">
                                                              </div>
+                                                            
                                                             
                                                               <div class="form-group form-default form-static-label">
                                                                 <input type="text" name="nome" id="nome" class="form-control" required="required" value="${modolLogin.nome}">
@@ -130,6 +131,44 @@
 															<span class="form-bar"></span>
                                                                 <label class="float-label">Perfil:</label>
 															</div>
+															
+															
+															<div class="form-group form-default form-static-label">
+															 <!-- onblur tem a (funcao) que traz os dados assim que se sai do campo de entrada apos a inclusao dos dados-->
+                                                                <input onblur="pesquisaCep();" type=text" name="cep" id="cep" class="form-control" required="required" autocomplete="off" value="${modolLogin.cep}">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Cep</label>
+                                                            </div>
+                                                            
+                                                            <div class="form-group form-default form-static-label">
+                                                                <input type="text" name="logradouro" id="logradouro" class="form-control" required="required" autocomplete="off" value="${modolLogin.logradouro}">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Logradouro</label>
+                                                            </div>
+                                                            
+                                                            <div class="form-group form-default form-static-label">
+                                                                <input type="text" name="bairro" id="bairro" class="form-control" required="required" autocomplete="off" value="${modolLogin.bairro}">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Bairro</label>
+                                                            </div>
+                                                            
+                                                            <div class="form-group form-default form-static-label">
+                                                                <input type="text" name="localidade" id="localidade" class="form-control" required="required" autocomplete="off" value="${modolLogin.localidade}">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Localidade</label>
+                                                            </div>
+                                                            
+                                                            <div class="form-group form-default form-static-label">
+                                                                <input type="text" name="uf" id="uf" class="form-control" required="required" autocomplete="off" value="${modolLogin.uf}">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Estado</label>
+                                                            </div>
+                                                            
+                                                             <div class="form-group form-default form-static-label">
+                                                                <input type="text" name="numero" id="numero" class="form-control" required="required" autocomplete="off" value="${modolLogin.numero}">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Numero</label>
+                                                            </div>
 
 															<div class="form-group form-default form-static-label">
                                                                 <input type="text" name="login" id="login" class="form-control" required="required" autocomplete="off" value="${modolLogin.login}">
@@ -258,6 +297,23 @@
 
 
 <script type="text/javascript">
+
+function pesquisaCep() {
+      var cep= $("#cep").val();
+    	  
+    	  $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+    		  
+    		  if (!("erro" in dados)) {
+                  //Atualiza os campos com os valores da consulta.
+                  $("#cep").val(dados.cep);
+                  $("#logradouro").val(dados.logradouro);
+                  $("#bairro").val(dados.bairro);
+                  $("#localidade").val(dados.localidade);
+                  $("#uf").val(dados.uf);
+                  
+    	  }
+      });
+}
 
 
 function visualizarImg(fotoembase64, filefoto) {

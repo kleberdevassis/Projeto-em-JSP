@@ -104,14 +104,15 @@ public class ServletUsuarioController extends ServletGenericUtil {
     			 String idUser = request.getParameter("id");
     			 
     			 ModelLogin modelLogin =  daoUsuarioRepository.consultaUsuarioID(idUser, super.getUserLogado(request));
-    			 if (modelLogin.getFotoUser() != null && !modelLogin.getFotoUser().isEmpty()) {
+    			 if (modelLogin.getFotouser() != null && !modelLogin.getFotouser().isEmpty()) {
     				 
-    				 response.setHeader("Content-Disposition", "attachment;filename=arquivo." + modelLogin.getExtensaoFotoUser());
-    				 response.getOutputStream().write(new Base64().decodeBase64(modelLogin.getFotoUser().split("\\,")[1]));
+    				 response.setHeader("Content-Disposition", "attachment;filename=arquivo." + modelLogin.getExtensaofotouser());
+    				 response.getOutputStream().write(new Base64().decodeBase64(modelLogin.getFotouser().split("\\,")[1]));
     				 
     			 }
     			 
     		 }
+    		 
     			 
     			 else {
     			 List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
@@ -144,6 +145,12 @@ public class ServletUsuarioController extends ServletGenericUtil {
     		String senha = request.getParameter("senha");
     		String perfil = request.getParameter("perfil");
     		String sexo = request.getParameter("sexo");
+    		String cep = request.getParameter("cep");
+    		String logradouro = request.getParameter("logradouro");
+    		String bairro = request.getParameter("bairro");
+    		String localidade = request.getParameter("localidade");
+    		String uf = request.getParameter("uf");
+    		String numero = request.getParameter("numero");
     		
     		ModelLogin modelLogin = new ModelLogin();
     		
@@ -154,6 +161,12 @@ public class ServletUsuarioController extends ServletGenericUtil {
     		modelLogin.setSenha(senha);
     		modelLogin.setPerfil(perfil);
     		modelLogin.setSexo(sexo);
+    		modelLogin.setCep(cep);
+    		modelLogin.setLogradouro(logradouro);
+    		modelLogin.setBairro(bairro);
+    		modelLogin.setLocalidade(localidade);
+    		modelLogin.setUf(uf);
+    		modelLogin.setNumero(numero);
     		
     		//setando foto e arquivo com foto
     		if (ServletFileUpload.isMultipartContent(request)) {
@@ -164,8 +177,8 @@ public class ServletUsuarioController extends ServletGenericUtil {
     				byte[] foto = IOUtils.toByteArray(part.getInputStream()); /*Converte imagem para byte*/
     				String imagemBase64 = "data:image/" + part.getContentType().split("\\/")[1] + ";base64," +  new Base64().encodeBase64String(foto);
     				
-    				modelLogin.setFotoUser(imagemBase64);
-    				modelLogin.setExtensaoFotoUser(part.getContentType().split("\\/")[1]);
+    				modelLogin.setFotouser(imagemBase64);
+    				modelLogin.setExtensaofotouser(part.getContentType().split("\\/")[1]);
     			}
     			
     		}

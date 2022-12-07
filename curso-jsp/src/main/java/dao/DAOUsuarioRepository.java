@@ -24,7 +24,7 @@ public ModelLogin gravarUsuario(ModelLogin objeto, Long userLogado) throws Excep
 		
 		if (objeto.isNovo()) {/*Grava um novo*/
 		
-		String sql = "INSERT INTO model_login(login, senha, nome, email, usuario_id, perfil, sexo)  VALUES (?, ?, ?, ?, ?, ?,?);";
+		String sql = "INSERT INTO model_login(login, senha, nome, email, usuario_id, perfil, sexo, cep, logradouro, bairro, localidade, uf, numero)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 		PreparedStatement preparedSql = connection.prepareStatement(sql);
 		
 		preparedSql.setString(1, objeto.getLogin());
@@ -35,18 +35,25 @@ public ModelLogin gravarUsuario(ModelLogin objeto, Long userLogado) throws Excep
 		preparedSql.setString(6, objeto.getPerfil());
 		preparedSql.setString(7, objeto.getSexo());
 		
+		preparedSql.setString(8, objeto.getCep());
+		preparedSql.setString(9, objeto.getLogradouro());
+		preparedSql.setString(10, objeto.getBairro());
+		preparedSql.setString(11, objeto.getLocalidade());
+		preparedSql.setString(12, objeto.getUf());
+		preparedSql.setString(13, objeto.getNumero());
+		
 		preparedSql.execute();
 		
 		connection.commit();
 		
 		
-			if (objeto.getFotoUser() != null && !objeto.getFotoUser().isEmpty()) {
+			if (objeto.getFotouser() != null && !objeto.getFotouser().isEmpty()) {
 				sql = "update model_login set fotouser =?, extensaofotouser=? where login =?";
 				
 				preparedSql = connection.prepareStatement(sql);
 				
-				preparedSql.setString(1, objeto.getFotoUser());
-				preparedSql.setString(2, objeto.getExtensaoFotoUser());
+				preparedSql.setString(1, objeto.getFotouser());
+				preparedSql.setString(2, objeto.getExtensaofotouser());
 				preparedSql.setString(3, objeto.getLogin());
 				
 				preparedSql.execute();
@@ -55,7 +62,7 @@ public ModelLogin gravarUsuario(ModelLogin objeto, Long userLogado) throws Excep
 			}
 		
 		}else {
-			String sql = "UPDATE model_login SET login=?, senha=?, nome=?, email=?, perfil=?, sexo=? WHERE id =  "+objeto.getId()+";";
+			String sql = "UPDATE model_login SET login=?, senha=?, nome=?, email=?, perfil=?, sexo=?, cep=?, logradouro=?, bairro=?, localidade=?, uf=?, numero=? WHERE id =  "+objeto.getId()+";";
 			
 			PreparedStatement prepareSql = connection.prepareStatement(sql);
 			
@@ -66,18 +73,25 @@ public ModelLogin gravarUsuario(ModelLogin objeto, Long userLogado) throws Excep
 			prepareSql.setString(5, objeto.getPerfil());
 			prepareSql.setString(6, objeto.getSexo());
 			
+			prepareSql.setString(7, objeto.getCep());
+			prepareSql.setString(8, objeto.getLogradouro());
+			prepareSql.setString(9, objeto.getBairro());
+			prepareSql.setString(10, objeto.getLocalidade());
+			prepareSql.setString(11, objeto.getUf());
+			prepareSql.setString(12, objeto.getNumero());
+			
 			prepareSql.executeUpdate();
 			
 			connection.commit();
 			
 			
-			if (objeto.getFotoUser() != null && !objeto.getFotoUser().isEmpty()) {
+			if (objeto.getFotouser() != null && !objeto.getFotouser().isEmpty()) {
 				sql = "update model_login set fotouser =?, extensaofotouser=? where id =?";
 				
 				prepareSql = connection.prepareStatement(sql);
 				
-				prepareSql.setString(1, objeto.getFotoUser());
-				prepareSql.setString(2, objeto.getExtensaoFotoUser());
+				prepareSql.setString(1, objeto.getFotouser());
+				prepareSql.setString(2, objeto.getExtensaofotouser());
 				prepareSql.setLong(3, objeto.getId());
 				
 				prepareSql.execute();
@@ -113,7 +127,7 @@ public ModelLogin gravarUsuario(ModelLogin objeto, Long userLogado) throws Excep
 			//modelLogin.setSenha(resultado.getString("senha"));
 			modelLogin.setPerfil(resultado.getString("perfil"));
 			modelLogin.setSexo(resultado.getString("sexo"));
-			
+			modelLogin.setFotouser(resultado.getString("fotouser"));
 			retorno.add(modelLogin);
 		}
 		
@@ -173,7 +187,14 @@ public ModelLogin gravarUsuario(ModelLogin objeto, Long userLogado) throws Excep
 			modelLogin.setUseradmin(resutlado.getBoolean("useradmin"));
 			modelLogin.setPerfil(resutlado.getString("perfil"));
 			modelLogin.setSexo(resutlado.getString("sexo"));
-			modelLogin.setFotoUser(resutlado.getString("fotouser"));
+			modelLogin.setFotouser(resutlado.getString("fotouser"));
+			
+			modelLogin.setCep(resutlado.getString("cep"));
+			modelLogin.setLogradouro(resutlado.getString("logradouro"));
+			modelLogin.setBairro(resutlado.getString("bairro"));
+			modelLogin.setLocalidade(resutlado.getString("localidade"));
+			modelLogin.setUf(resutlado.getString("uf"));
+			modelLogin.setNumero(resutlado.getString("numero"));
 		}
 		
 		
@@ -204,7 +225,13 @@ public ModelLogin gravarUsuario(ModelLogin objeto, Long userLogado) throws Excep
 			modelLogin.setUseradmin(resutlado.getBoolean("useradmin"));
 			modelLogin.setPerfil(resutlado.getString("perfil"));
 			modelLogin.setSexo(resutlado.getString("sexo"));
-			modelLogin.setFotoUser(resutlado.getString("fotouser"));
+			modelLogin.setFotouser(resutlado.getString("fotouser"));modelLogin.setCep(resutlado.getString("cep"));
+			modelLogin.setLogradouro(resutlado.getString("logradouro"));
+			modelLogin.setBairro(resutlado.getString("bairro"));
+			modelLogin.setLocalidade(resutlado.getString("localidade"));
+			modelLogin.setUf(resutlado.getString("uf"));
+			modelLogin.setNumero(resutlado.getString("numero"));
+			
 		}
 		
 		
@@ -233,7 +260,13 @@ public ModelLogin gravarUsuario(ModelLogin objeto, Long userLogado) throws Excep
 			modelLogin.setNome(resutlado.getString("nome"));
 			modelLogin.setPerfil(resutlado.getString("perfil"));
 			modelLogin.setSexo(resutlado.getString("sexo"));
-			modelLogin.setFotoUser(resutlado.getString("fotouser"));
+			modelLogin.setFotouser(resutlado.getString("fotouser"));
+			modelLogin.setCep(resutlado.getString("cep"));
+			modelLogin.setLogradouro(resutlado.getString("logradouro"));
+			modelLogin.setBairro(resutlado.getString("bairro"));
+			modelLogin.setLocalidade(resutlado.getString("localidade"));
+			modelLogin.setUf(resutlado.getString("uf"));
+			modelLogin.setNumero(resutlado.getString("numero"));
 		}
 		
 		
@@ -263,8 +296,14 @@ public ModelLogin gravarUsuario(ModelLogin objeto, Long userLogado) throws Excep
 			modelLogin.setNome(resutlado.getString("nome"));
 			modelLogin.setPerfil(resutlado.getString("perfil"));
 			modelLogin.setSexo(resutlado.getString("sexo"));
-			modelLogin.setFotoUser(resutlado.getString("fotouser"));
-			modelLogin.setExtensaoFotoUser(resutlado.getString("extensaofotouser"));;
+			modelLogin.setFotouser(resutlado.getString("fotouser"));
+			modelLogin.setExtensaofotouser(resutlado.getString("extensaofotouser"));
+			modelLogin.setCep(resutlado.getString("cep"));
+			modelLogin.setLogradouro(resutlado.getString("logradouro"));
+			modelLogin.setBairro(resutlado.getString("bairro"));
+			modelLogin.setLocalidade(resutlado.getString("localidade"));
+			modelLogin.setUf(resutlado.getString("uf"));
+			modelLogin.setNumero(resutlado.getString("numero"));
 		}
 		
 		
