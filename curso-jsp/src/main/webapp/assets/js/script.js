@@ -227,6 +227,8 @@ function toggleFullScreen() {
 }
 
 // verificar por que o botao de compras não sumiu
+
+
 var $window = $(window);
 var nav = $('.fixed-button');
 $window.scroll(function() {
