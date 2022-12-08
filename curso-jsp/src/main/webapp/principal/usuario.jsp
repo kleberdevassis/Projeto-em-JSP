@@ -341,6 +341,13 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 							</tbody>
 						</table>
 					</div>
+					
+					<!-- html feita para paginacao -->
+					<nav aria-label="Page navigation example">
+											<ul class="pagination" id="ulPaginacaoUserAjax">
+											</ul>
+											</nav>/
+					
 					<span id="totalResultados"></span>
 
 				</div>
@@ -414,12 +421,13 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 									url : urlAction,
 									data : "nomeBusca=" + nomeBusca
 											+ '&acao=buscarUserAjax',
-									success : function(response) {
+									success : function(response, textStatus, xhr) {
 
 										var json = JSON.parse(response);
 
 										$('#tabelaresultados > tbody > tr')
 												.remove();
+										$("#ulPaginacaoUserAjax > li").remove();
 
 										for (var p = 0; p < json.length; p++) {
 											$('#tabelaresultados > tbody')
@@ -436,6 +444,13 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 										document
 												.getElementById('totalResultados').textContent = 'Resultados: '
 												+ json.length;
+										
+										var totalPagina = xhr.getResponseHeader("totalPagina");
+										
+										for(var p = 0; p < totalPagina; p++){
+											var url = urlAction + "?nomeBusca=" + nomeBusca+ "&acao=buscarUserAjaxPage&pagina=" + (p * 5);
+											$("#ulPaginacaoUserAjax").append('<li class='page-item'><a class='page-link' href='+url+'>'+(p + 1)+"</a></li>');
+										}
 
 									}
 
