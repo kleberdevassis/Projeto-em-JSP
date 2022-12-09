@@ -64,18 +64,33 @@ public class ServletUsuarioController extends ServletGenericUtil {
     		 else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarUserAjax")) {
     			 
     			 String nomeBusca = request.getParameter("nomeBusca");
-    			 String pagina = request.getParameter("pagina");
     			 
-    			 List<ModelLogin> dadosJsonUser =  daoUsuarioRepository.consultaUsuarioListOffSet(nomeBusca,super.getUserLogado(request),Integer.parseInt(pagina));
+    			 List<ModelLogin> dadosJsonUser =  daoUsuarioRepository.consultaUsuarioList(nomeBusca, super.getUserLogado(request));
     			 
     			 ObjectMapper mapper = new ObjectMapper();
     			 
     			 String json = mapper.writeValueAsString(dadosJsonUser);
     			 
-    			 response.addHeader("totalPagina", ""+daoUsuarioRepository.consultaUsuarioListTotalPaginaPaginacao(nomeBusca, super.getUserLogado(request)));
+    			 response.addHeader("totalPagina", ""+ daoUsuarioRepository.consultaUsuarioListTotalPaginaPaginacao(nomeBusca, super.getUserLogado(request)));
     			 response.getWriter().write(json);
     			 
     		 }
+    		 
+    		 else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarUserAjaxPage")) {
+    			 
+    			 String nomeBusca = request.getParameter("nomeBusca");
+    			 String pagina = request.getParameter("pagina");
+    			 
+    			 List<ModelLogin> dadosJsonUser =  daoUsuarioRepository.consultaUsuarioListOffSet(nomeBusca, super.getUserLogado(request), Integer.parseInt(pagina));
+    			 
+    			 ObjectMapper mapper = new ObjectMapper();
+    			 
+    			 String json = mapper.writeValueAsString(dadosJsonUser);
+    			 
+    			 response.addHeader("totalPagina", ""+ daoUsuarioRepository.consultaUsuarioListTotalPaginaPaginacao(nomeBusca, super.getUserLogado(request)));
+    			 response.getWriter().write(json);
+    			 
+    		 	}
     		 
     		 else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarEditar")) {
     				

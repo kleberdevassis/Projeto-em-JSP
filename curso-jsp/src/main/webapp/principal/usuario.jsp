@@ -303,209 +303,259 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 
 
 	<jsp:include page="javascriptfile.jsp"></jsp:include>
+	
+	
 
-	<div class="modal fade" id="exampleModalUsuario" tabindex="-1"
-		role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Pesquisa de
-						usuário</h5>
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
+	<!-- Modal -->
+<div class="modal fade" id="exampleModalUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Pesquisa de usuário</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
 
-					<div class="input-group mb-3">
-						<input type="text" class="form-control" placeholder="Nome"
-							aria-label="nome" id="nomeBusca" aria-describedby="basic-addon2">
-						<div class="input-group-append">
-							<button class="btn btn-success" type="button"
-								onclick="buscarUsuario();">Buscar</button>
-						</div>
-					</div>
-
-					<div style="height: 300px; overflow: scroll;">
-						<table class="table" id="tabelaresultados">
-							<thead>
-								<tr>
-									<th scope="col">ID</th>
-									<th scope="col">Nome</th>
-									<th scope="col">Ver</th>
-								</tr>
-							</thead>
-							<tbody>
-
-							</tbody>
-						</table>
-					</div>
-					
-					<!-- html feita para paginacao -->
-					<nav aria-label="Page navigation example">
-											<ul class="pagination" id="ulPaginacaoUserAjax">
-											</ul>
-											</nav>/
-					
-					<span id="totalResultados"></span>
-
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary"
-						data-dismiss="modal">Fechar</button>
-				</div>
-			</div>
-		</div>
+	<div class="input-group mb-3">
+	  <input type="text" class="form-control" placeholder="Nome" aria-label="nome" id="nomeBusca" aria-describedby="basic-addon2">
+	  <div class="input-group-append">
+	    <button class="btn btn-success" type="button" onclick="buscarUsuario();">Buscar</button>
+	  </div>
 	</div>
+	
+<div style="height: 300px;overflow: scroll;" >	
+	<table class="table" id="tabelaresultados">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Nome</th>
+      <th scope="col">Ver</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+  </tbody>
+</table>
+</div>
 
+
+<nav aria-label="Page navigation example">
+<ul class="pagination" id="ulPaginacaoUserAjax">
+											
+</ul>
+</nav>	
+										
+<span id="totalResultados"></span>
+	
+	  </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 	<script type="text/javascript">
-		function pesquisaCep() {
-			var cep = $("#cep").val();
+	
+	
+	function pesquisaCep() {
+	    var cep = $("#cep").val();
+	    
+	    $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) { 
 
-			$.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?",
-					function(dados) {
-
-						if (!("erro" in dados)) {
-							//Atualiza os campos com os valores da consulta.
-							$("#cep").val(dados.cep);
-							$("#logradouro").val(dados.logradouro);
-							$("#bairro").val(dados.bairro);
-							$("#localidade").val(dados.localidade);
-							$("#uf").val(dados.uf);
-
-						}
-					});
+		if (!("erro" in dados)) {
+		        $("#cep").val(dados.cep);
+		        $("#logradouro").val(dados.logradouro);
+	            $("#bairro").val(dados.bairro);
+	            $("#localidade").val(dados.localidade);
+	            $("#uf").val(dados.uf);
 		}
+		    
+		
+	    });
+	}
 
-		function visualizarImg(fotoembase64, filefoto) {
+	function visualizarImg(fotoembase64, filefoto) {
+	    
+	    
+	    var preview = document.getElementById(fotoembase64); // campo IMG html
+	    var fileUser = document.getElementById(filefoto).files[0];
+	    var reader = new FileReader();
+	    
+	    reader.onloadend = function (){
+		    preview.src = reader.result; /*Carrega a foto na tela*/
+	    };
+	    
+	    if (fileUser) {
+		  reader.readAsDataURL(fileUser); /*Preview da imagem*/
+	    }else {
+		 preview.src=  '';
+	    }
+	    
+	}
 
-			var preview = document.getElementById(fotoembase64); // campo IMG html
-			var fileUser = document.getElementById(filefoto).files[0];
-			var reader = new FileReader();
 
-			reader.onloadend = function() {
-				preview.src = reader.result; /*Carrega a foto na tela*/
-			};
+	function verEditar(id) {
+	   
+	    var urlAction = document.getElementById('formUser').action;
+	    
+	    
+	    window.location.href = urlAction + '?acao=buscarEditar&id='+id;
+	    
+	}
 
-			if (fileUser) {
-				reader.readAsDataURL(fileUser); /*Preview da imagem*/
-			} else {
-				preview.src = '';
-			}
+	function buscaUserPagAjax(url){
+	   
+	    
+	    var urlAction = document.getElementById('formUser').action;
+	    var nomeBusca = document.getElementById('nomeBusca').value;
+	    
+		 $.ajax({	     
+		     method: "get",
+		     url : urlAction,
+		     data : url,
+		     success: function (response, textStatus, xhr) {
+			 
+			 var json = JSON.parse(response);
+			 
+			 
+			 $('#tabelaresultados > tbody > tr').remove();
+			 $("#ulPaginacaoUserAjax > li").remove();
+			 
+			  for(var p = 0; p < json.length; p++){
+			      $('#tabelaresultados > tbody').append('<tr> <td>'+json[p].id+'</td> <td> '+json[p].nome+'</td> <td><button onclick="verEditar('+json[p].id+')" type="button" class="btn btn-info">Ver</button></td></tr>');
+			  }
+			  
+			  document.getElementById('totalResultados').textContent = 'Resultados: ' + json.length;
+			  
+			    var totalPagina = xhr.getResponseHeader("totalPagina");
+		
+			  
+			    
+				  for (var p = 0; p < totalPagina; p++){
+				      
+			
+				      
+				      var url = 'nomeBusca=' + nomeBusca + '&acao=buscarUserAjaxPage&pagina='+ (p * 5);
+				      
+				   
+				      $("#ulPaginacaoUserAjax").append('<li class="page-item"><a class="page-link" href="#" onclick="buscaUserPagAjax(\''+url+'\')">'+ (p + 1) +'</a></li>'); 
+				      
+				  }
+			 
+		     }
+		     
+		 }).fail(function(xhr, status, errorThrown){
+		    alert('Erro ao buscar usuário por nome: ' + xhr.responseText);
+		 });
+	    
+	}
 
-		}
 
-		function verEditar(id) {
+	function buscarUsuario() {
+	    
+	    var nomeBusca = document.getElementById('nomeBusca').value;
+	    
+	    if (nomeBusca != null && nomeBusca != '' && nomeBusca.trim() != ''){ /*Validando que tem que ter valor pra buscar no banco*/
+		
+		 var urlAction = document.getElementById('formUser').action;
+		
+		 $.ajax({
+		     
+		     method: "get",
+		     url : urlAction,
+		     data : "nomeBusca=" + nomeBusca + '&acao=buscarUserAjax',
+		     success: function (response, textStatus, xhr) {
+			 
+			 var json = JSON.parse(response);
+			 
+			 
+			 $('#tabelaresultados > tbody > tr').remove();
+			 $("#ulPaginacaoUserAjax > li").remove();
+			 
+			  for(var p = 0; p < json.length; p++){
+			      $('#tabelaresultados > tbody').append('<tr> <td>'+json[p].id+'</td> <td> '+json[p].nome+'</td> <td><button onclick="verEditar('+json[p].id+')" type="button" class="btn btn-info">Ver</button></td></tr>');
+			  }
+			  
+			  document.getElementById('totalResultados').textContent = 'Resultados: ' + json.length;
+			  
+			    var totalPagina = xhr.getResponseHeader("totalPagina");
+		
+			  
+			    
+				  for (var p = 0; p < totalPagina; p++){
+				      
+				      var url = 'nomeBusca=' + nomeBusca + '&acao=buscarUserAjaxPage&pagina='+ (p * 5);
+				      
+				   
+				      $("#ulPaginacaoUserAjax").append('<li class="page-item"><a class="page-link" href="#" onclick="buscaUserPagAjax(\''+url+'\')">'+ (p + 1) +'</a></li>');
+				      
+				  }
+			 
+		     }
+		     
+		 }).fail(function(xhr, status, errorThrown){
+		    alert('Erro ao buscar usuário por nome: ' + xhr.responseText);
+		 });
+		
+		
+	    }
+	    
+	}
 
-			var urlAction = document.getElementById('formUser').action;
 
-			window.location.href = urlAction + '?acao=buscarEditar&id=' + id;
+	function criarDeleteComAjax() {
+	    
+	    if (confirm('Deseja realmente excluir os dados?')){
+		
+		 var urlAction = document.getElementById('formUser').action;
+		 var idUser = document.getElementById('id').value;
+		 
+		 $.ajax({
+		     
+		     method: "get",
+		     url : urlAction,
+		     data : "id=" + idUser + '&acao=deletarajax',
+		     success: function (response) {
+			 
+			  limparForm();
+			  document.getElementById('msg').textContent = response;
+		     }
+		     
+		 }).fail(function(xhr, status, errorThrown){
+		    alert('Erro ao deletar usuário por id: ' + xhr.responseText);
+		 });
+		 
+		  
+	    }
+	    
+	}
 
-		}
 
-		function buscarUsuario() {
 
-			var nomeBusca = document.getElementById('nomeBusca').value;
+	function criarDelete() {
+	    
+	    if(confirm('Deseja realmente excluir os dados?')) {
+		
+		    document.getElementById("formUser").method = 'get';
+		    document.getElementById("acao").value = 'deletar';
+		    document.getElementById("formUser").submit();
+		    
+	    }
+	    
+	}
 
-			if (nomeBusca != null && nomeBusca != '' && nomeBusca.trim() != '') { /*Validando que tem que ter valor pra buscar no banco*/
 
-				var urlAction = document.getElementById('formUser').action;
-
-				$
-						.ajax(
-								{
-
-									method : "get",
-									url : urlAction,
-									data : "nomeBusca=" + nomeBusca
-											+ '&acao=buscarUserAjax',
-									success : function(response, textStatus, xhr) {
-
-										var json = JSON.parse(response);
-
-										$('#tabelaresultados > tbody > tr')
-												.remove();
-										$("#ulPaginacaoUserAjax > li").remove();
-
-										for (var p = 0; p < json.length; p++) {
-											$('#tabelaresultados > tbody')
-													.append(
-															'<tr> <td>'
-																	+ json[p].id
-																	+ '</td> <td> '
-																	+ json[p].nome
-																	+ '</td> <td><button onclick="verEditar('
-																	+ json[p].id
-																	+ ')" type="button" class="btn btn-info">Ver</button></td></tr>');
-										}
-
-										document
-												.getElementById('totalResultados').textContent = 'Resultados: '
-												+ json.length;
-										
-										var totalPagina = xhr.getResponseHeader("totalPagina");
-										
-										for(var p = 0; p < totalPagina; p++){
-											var url = urlAction + "?nomeBusca=" + nomeBusca+ "&acao=buscarUserAjaxPage&pagina=" + (p * 5);
-											$("#ulPaginacaoUserAjax").append('<li class='page-item'><a class='page-link' href='+url+'>'+(p + 1)+"</a></li>');
-										}
-
-									}
-
-								}).fail(
-								function(xhr, status, errorThrown) {
-									alert('Erro ao buscar usuário por nome: '
-											+ xhr.responseText);
-								});
-
-			}
-
-		}
-
-		function criarDeleteComAjax() {
-			if (confirm('deseja realmente excluir os dados?')) {
-				var urlAction = document.getElementById('formUser').action;
-				var idUser = document.getElementById('id').value;
-
-				$.ajax({
-
-					method : "get",
-					url : urlAction,
-					data : "id=" + idUser + '&acao=deletarajax',
-					success : function(response) {
-
-						limparForm();
-						document.getElementById('msg').textContent = response;
-					}
-
-				}).fail(
-						function(xhr, status, errorThrown) {
-							alert('erro ao deletar o usuario por id: '
-									+ xhr.responseText);
-						});
-			}
-
-		}
-
-		function criarDelete() {
-			if (confirm('deseja realmente excluir os dados?')) {
-
-				document.getElementById("formUser").method = 'get';
-				document.getElementById("acao").value = 'deletar';
-				document.getElementById("formUser").submit;
-			}
-		}
-
-		function limparForm() {
-			var elementos = document.getElementById("formUser").elements; /*retorna os elementos html dentro do form*/
-			for (p = 0; p < elementos.length; p++) {
-				elementos[p].value = '';
-
-			}
-
-		}
+	function limparForm() {
+	    
+	    var elementos = document.getElementById("formUser").elements; /*Retorna os elementos html dentro do form*/
+	    
+	    for (p = 0; p < elementos.length; p ++){
+		    elementos[p].value = '';
+	    }
+	}
 	</script>
 
 </body>
