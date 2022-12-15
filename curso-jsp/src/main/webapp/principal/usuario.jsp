@@ -95,6 +95,18 @@
 																	value="${modolLogin.nome}"> <span
 																	class="form-bar"></span> <label class="float-label">Nome:</label>
 															</div>
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="dataNascimento" id="dataNascimento"
+																	class="form-control" required="required"
+																	value="${modolLogin.dataNascimento}"> <span
+																	class="form-bar"></span> <label class="float-label">Dat. Nascimento:</label>
+															</div>
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="rendamensal" id="rendamensal"
+																	class="form-control" required="required"
+																	value="${modolLogin.rendamensal}"> <span
+																	class="form-bar"></span> <label class="float-label">Renda Mensal</label>
+															</div>
 
 															<div class="form-group form-default form-static-label">
 																<input type="email" name="email" id="email"
@@ -240,9 +252,13 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 															<button type="button"
 																class="btn btn-info waves-effect waves-light"
 																onclick="criarDeleteComAjax();">Excluir</button>
-																<c:if test="${modolLogin.id > 0}"> 
-												               <a href="<%= request.getContextPath() %>/SertvletTelefone?iduser=${modolLogin.id}" class="btn btn-primary waves-effect waves-light" >Telefone</a>
-												             </c:if>
+															<!-- condicao se id do usuario estiver em tela fazer a ancoragem do botao, com o link para servlet, 
+																que automaticamente traz a tela telefone para o usuario -->
+															<c:if test="${modolLogin.id > 0}">
+																<a
+																	href="<%= request.getContextPath() %>/ServletTelefone?iduser=${modolLogin.id}"
+																	class="btn btn-primary waves-effect waves-light">Telefone</a>
+															</c:if>
 															<button type="button" class="btn btn-secondary"
 																data-toggle="modal" data-target="#exampleModalUsuario">Pesquisar</button>
 														</form>
@@ -347,14 +363,14 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 						</table>
 					</div>
 
-                    <!--  html de paginacao do bootstrap a ser inclusa na pagina apos tratamento no ajax -->
+					<!--  html de paginacao do bootstrap a ser inclusa na pagina apos tratamento no ajax -->
 					<nav aria-label="Page navigation example">
 						<ul class="pagination" id="ulPaginacaoUserAjax">
 
 						</ul>
 					</nav>
-                    
-                    <!-- conteiner generico para ser exibido na tela apos devido tratamento no ajax-->
+
+					<!-- conteiner generico para ser exibido na tela apos devido tratamento no ajax-->
 					<span id="totalResultados"></span>
 
 				</div>
@@ -366,7 +382,58 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 		</div>
 	</div>
 
+
+    
+
 	<script type="text/javascript">
+	
+	$("#rendamensal").maskMoney({showSymbol:true, symbol:"R$ ", decimal:",", thousands:"."});
+
+	const formatter = new Intl.NumberFormat('pt-BR', {
+	    currency : 'BRL',
+	    minimumFractionDigits : 2
+	});
+
+	$("#rendamensal").val(formatter.format($("#rendamensal").val()));
+
+	$("#rendamensal").focus();
+
+	var dataNascimento = $("#dataNascimento").val();
+
+	var dateFormat = new Date(dataNascimento);
+
+	$("#dataNascimento").val(dateFormat.toLocaleDateString('pt-BR',{timeZone: 'UTC'}));
+
+	$("#nome").focus();
+	
+	<!-- funcao que coloca o formato data de nascimento -->
+	$( function() {
+		  
+		  $("#dataNascimento").datepicker({
+			    dateFormat: 'dd/mm/yy',
+			    dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
+			    dayNamesMin: ['D','S','T','Q','Q','S','S','D'],
+			    dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
+			    monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+			    monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
+			    nextText: 'Próximo',
+			    prevText: 'Anterior'
+			});
+	} );
+	
+	
+	  <!-- faz com que a campo na tela aceite apenas numeros -->
+      $("#numero").keypress(function(event){
+      return /\d/.test(String.fromCharCode(event.keyCode));
+      });
+      
+       <!-- faz com que a campo na tela aceite apenas numeros -->
+      $("#cep").keypress(function(event){
+      return /\d/.test(String.fromCharCode(event.keyCode));
+      });
+	
+	
+	
 		function pesquisaCep() {
 			var cep = $("#cep").val();
 
@@ -504,14 +571,19 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 													.append(
 															'<tr> <td>'
 																	+ json[p].id
-																	+ '</td> <td> '+ json[p].nome+ '</td> <td><button onclick="verEditar('+ json[p].id+ ')" type="button" class="btn btn-info">Ver</button></td></tr>');
+																	+ '</td> <td> '
+																	+ json[p].nome
+																	+ '</td> <td><button onclick="verEditar('
+																	+ json[p].id
+																	+ ')" type="button" class="btn btn-info">Ver</button></td></tr>');
 										}
 
-										document.getElementById('totalResultados').textContent = 'Resultados: '
+										document
+												.getElementById('totalResultados').textContent = 'Resultados: '
 												+ json.length;// inclui no span totalResultados a informacao com o a quantidade que tem nos dados JSON
 
 										var totalPagina = xhr // variavel que obtem o valor total da pagina atraves do atributo total pagina existente na servletUsuario
-												.getResponseHeader("totalPagina");
+										.getResponseHeader("totalPagina");
 
 										for (var p = 0; p < totalPagina; p++) {//for que inclui o nome digitado e ativa a acao na servletUsuario definindo a quantidade de 5  
 
@@ -520,7 +592,8 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 													+ '&acao=buscarUserAjaxPage&pagina='
 													+ (p * 5);
 
-											$("#ulPaginacaoUserAjax") // ainda dentro do laço inclui na ulPaginacaoUserAjax a funcao buscaUserPagAjax
+											$("#ulPaginacaoUserAjax")
+													// ainda dentro do laço inclui na ulPaginacaoUserAjax a funcao buscaUserPagAjax
 													.append(
 															'<li class="page-item"><a class="page-link" href="#" onclick="buscaUserPagAjax(\''
 																	+ url
