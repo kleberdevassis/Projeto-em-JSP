@@ -16,7 +16,6 @@
 
 	<jsp:include page="theme-loader.jsp"></jsp:include>
 
-	<!-- Pre-loader end -->
 	<div id="pcoded" class="pcoded">
 		<div class="pcoded-overlay-box"></div>
 		<div class="pcoded-container navbar-wrapper">
@@ -52,8 +51,8 @@
 														<form class="form-material" enctype="multipart/form-data"
 															action="<%=request.getContextPath()%>/ServletUsuarioController"
 															method="post" id="formUser">
-
-															<input type="hidden" name="acao" id="acao" value="">
+                                                            
+															<input type="hidden" name="acao" id="acao" value=""> 
 
 															<div class="form-group form-default form-static-label">
 																<input type="text" name="id" id="id"
@@ -387,14 +386,17 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 
 	<script type="text/javascript">
 	
-	$("#rendamensal").maskMoney({showSymbol:true, symbol:"R$ ", decimal:",", thousands:"."});
+	
+	<!-- transforma valor numerico em valor monetário  -->
+	$("#rendamensal").maskMoney({showSymbol:true, prefix:"R$ ", decimal:",", thousands:"."});
 
+	<!-- constante formatter traz funcao que tem como parametro formato pt-BR moeda brasileira com valor de dois digitos-->
 	const formatter = new Intl.NumberFormat('pt-BR', {
 	    currency : 'BRL',
 	    minimumFractionDigits : 2
 	});
 
-	$("#rendamensal").val(formatter.format($("#rendamensal").val()));
+	$("#rendamensal").val(formatter.format($("#rendamensal").val())); <!-- constante formatter definida no valor de rendamensal -->
 
 	$("#rendamensal").focus();
 
@@ -643,6 +645,7 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 
 		}
 
+		<!-- exibe frase de confirmação, acessa a servlet e aciona o get/acao/deletar para os dados serem deletados do banco  -->
 		function criarDelete() {
 
 			if (confirm('Deseja realmente excluir os dados?')) {
