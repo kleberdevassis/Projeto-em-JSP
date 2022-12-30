@@ -140,6 +140,26 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			 request.setAttribute("modelLogins", modelLogins);
 		     request.setAttribute("totalPagina", daoUsuarioRepository.totalPagina(this.getUserLogado(request)));
 			 request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+			 
+		 } else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("imprimirRelatorioUser")) {
+			 
+			 String dataInicial = request.getParameter("dataInicial");
+			 String dataFinal = request.getParameter("dataFinal");
+			 
+			 if(dataInicial == null || dataInicial.isEmpty() && dataFinal == null || dataFinal.isEmpty()) {
+				 
+				 request.setAttribute("listaUser", daoUsuarioRepository.consultaUsuarioListRel(super.getUserLogado(request)));
+			 }else {
+				 
+				 request.setAttribute("listaUser", daoUsuarioRepository
+						 .consultaUsuarioListRel(super.getUserLogado(request),dataInicial,dataFinal));
+				 
+			 }
+			 
+			 request.setAttribute(dataInicial, "dataInicial");
+			 request.setAttribute(dataFinal, "dataFinal");
+			 request.getRequestDispatcher("principal/reluser.jsp").forward(request, response);
+			 
 		 }
 		
 		 else {
@@ -160,6 +180,12 @@ public class ServletUsuarioController extends ServletGenericUtil {
 		}
 
 	}
+	
+	
+	
+	
+	
+	
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
@@ -185,6 +211,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 		
 		rendaMensal = rendaMensal.split("\\ ")[1].replaceAll("\\.", "").replaceAll("\\,", ".");
 		
+		
 		ModelLogin modelLogin = new ModelLogin();
 		
 		modelLogin.setId(id != null && !id.isEmpty() ? Long.parseLong(id) : null);
@@ -200,6 +227,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 		modelLogin.setLocalidade(localidade);
 		modelLogin.setUf(uf);
 		modelLogin.setNumero(numero);
+		// atributo (dataNascimento) tera valor de classe data que vai gerar um novo valor (SimpleDateFormat) que sera formatado para dia mes e ano
 		modelLogin.setDataNascimento(Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataNascimento))));
 		modelLogin.setRendamensal(Double.valueOf(rendaMensal));
 		

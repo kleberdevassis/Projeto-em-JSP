@@ -3,6 +3,8 @@
 	pageEncoding="ISO-8859-1"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!-- biblioteca de tags para a tecnologia JavaServer Pages -->
+
 
 <!-- charset=UTF-8 resolveu o problema com os acentos -->
 <!DOCTYPE html>
@@ -116,7 +118,7 @@
 															</div>
 
 
-
+                                                            
 															<div class="form-group form-default form-static-label">
 																<select class="form-control"
 																	aria-label="Default select example" name="perfil">
@@ -247,11 +249,14 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 															<button type="button"
 																class="btn btn-primary waves-effect waves-light"
 																onclick="limparForm();">Novo</button>
+																
 															<button class="btn btn-success waves-effect waves-light">Salvar</button>
+															
 															<button type="button"
 																class="btn btn-info waves-effect waves-light"
 																onclick="criarDeleteComAjax();">Excluir</button>
-															<!-- condicao se id do usuario estiver em tela fazer a ancoragem do botao, com o link para servlet, 
+																
+															<!-- (condicao) se id do usuario estiver em tela, fazer a ancoragem do botao, com o link para servlet, 
 																que automaticamente traz a tela telefone para o usuario -->
 															<c:if test="${modolLogin.id > 0}">
 																<a
@@ -390,25 +395,25 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 	<!-- transforma valor numerico em valor monetário  -->
 	$("#rendamensal").maskMoney({showSymbol:true, prefix:"R$ ", decimal:",", thousands:"."});
 
-	<!-- constante formatter traz funcao que tem como parametro formato pt-BR moeda brasileira com valor de dois digitos-->
+	<!-- constante formatter com numero formatado em moeda brasileira com fracao minima de dois digitos-->
 	const formatter = new Intl.NumberFormat('pt-BR', {
 	    currency : 'BRL',
 	    minimumFractionDigits : 2
 	});
 
-	$("#rendamensal").val(formatter.format($("#rendamensal").val())); <!-- constante formatter definida no valor de rendamensal -->
+	$("#rendamensal").val(formatter.format($("#rendamensal").val())); <!-- valor de rendamensal formatada como paremetro de constante formatter que esta definido como valor de rendamensal, o que formata o perfil do valor antes da digitacao -->
 
 	$("#rendamensal").focus();
 
-	var dataNascimento = $("#dataNascimento").val();
+	var dataNascimento = $("#dataNascimento").val(); <!-- obtem o valor de dataNascimento -->
 
 	var dateFormat = new Date(dataNascimento);
 
-	$("#dataNascimento").val(dateFormat.toLocaleDateString('pt-BR',{timeZone: 'UTC'}));
+	$("#dataNascimento").val(dateFormat.toLocaleDateString('pt-BR',{timeZone: 'UTC'}));<!-- formata valor para o local UTC permitindo ser incluido no Banco-->
 
 	$("#nome").focus();
 	
-	<!-- funcao que coloca o formato data de nascimento -->
+	<!-- funcao para formatação da data de nascimento -->
 	$( function() {
 		  
 		  $("#dataNascimento").datepicker({
@@ -435,10 +440,10 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
       });
 	
 	
-	
+	    <!-- funcao que adquire dados com o cep digitado, codigo consultado em https://viacep.com.br/exemplo/jquery/-->
 		function pesquisaCep() {
 			var cep = $("#cep").val();
-
+            <!-- Consulta o webservice viacep.com.br-->
 			$.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?",
 					function(dados) {
 
@@ -545,17 +550,16 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 
 		function buscarUsuario() {
 
-			var nomeBusca = document.getElementById('nomeBusca').value; // traz o valor do id nomeBusca do botao Buscar
+			var nomeBusca = document.getElementById('nomeBusca').value; // traz o (valor do id nomeBusca) do botao Buscar
 
 			if (nomeBusca != null && nomeBusca != '' && nomeBusca.trim() != '') { /*Validando que tem que ter valor pra buscar no banco*/
 
 				var urlAction = document.getElementById('formUser').action; // traz o formUser que tem acesso a ServletUsuario e seus metodos
 
-				$
-						.ajax(
+				$.ajax(
 								{
 
-									method : "get", // define o  método no caso get
+									method : "get", // define o  método, que no caso é get.
 									url : urlAction, // utiliza a variavel urlAction
 									data : "nomeBusca=" + nomeBusca
 											+ '&acao=buscarUserAjax',// cria um parametro nomeBusca com o valor da variavel nomeBusca e concatena com a acao buscarUserAjax que fica na ServletUsuario 
@@ -628,8 +632,8 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 
 					method : "get",
 					url : urlAction,
-					data : "id=" + idUser + '&acao=deletarajax',
-					success : function(response) {
+					data : "id=" + idUser + '&acao=deletarajax', <!-- passa o id do usuario e define a acao a ser executada na servlet -->
+					success : function(response) {    <!--apos deletar os dados no banco, limpa o formulario e exibe a mensagem de conclusao -->
 
 						limparForm();
 						document.getElementById('msg').textContent = response;

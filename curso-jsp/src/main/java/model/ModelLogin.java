@@ -2,6 +2,8 @@ package model;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModelLogin implements Serializable {
 
@@ -15,50 +17,59 @@ public class ModelLogin implements Serializable {
 	private String email;
 	private String login;
 	private String senha;
-	
+
 	private Date dataNascimento;
-	
+
 	private String sexo;
-	
+
 	private boolean useradmin;
-	
+
 	private String perfil;
-	
+
 	private String fotouser;
 
 	private String extensaofotouser;
-	
+
 	private String cep;
-	
+
 	private String logradouro;
-	
+
 	private String bairro;
-	
+
 	private String localidade;
-	
+
 	private String uf;
-	
+
 	private String numero;
-	
+
 	private Double rendamensal;
-	
+
+	private List<ModelTelefone> telefones = new ArrayList<>();
+
+	public List<ModelTelefone> getTelefones() {
+		return telefones;
+	}
+
+	public void setTelefones(List<ModelTelefone> telefones) {
+		this.telefones = telefones;
+	}
+
 	public void setRendamensal(Double rendamensal) {
 		this.rendamensal = rendamensal;
 	}
-	
+
 	public Double getRendamensal() {
 		return rendamensal;
 	}
-	
-	
+
 	public Date getDataNascimento() {
 		return dataNascimento;
 	}
-	
+
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
-	
+
 	public String getCep() {
 		return cep;
 	}
@@ -148,11 +159,11 @@ public class ModelLogin implements Serializable {
 	}
 
 	public boolean isNovo() {
-		
-		if(this.id == null ) {
-			return true; 
-		}else if(this.id != null && this.id > 0) {
-			return false; 
+
+		if (this.id == null) {
+			return true;
+		} else if (this.id != null && this.id > 0) {
+			return false;
 		}
 		return id == null;
 	}
