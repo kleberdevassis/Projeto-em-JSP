@@ -106,3 +106,11 @@ alter table model_login add column datanascimento date;
 incluindo coluna numerica de 6 casas com precisão de 3
 alter table model_login add column rendamensal double precision;
 
+deletando a restricao do usuario_pai_fk
+ALTER TABLE telefone DROP CONSTRAINT usuario_pai_fk;
+
+criando nova referencia de usuario_pai_id com nova restricao com atualização e delete em cascata
+ALTER TABLE telefone ADD CONSTRAINT usuario_pai_fk FOREIGN KEY (usuario_pai_id) REFERENCES model_login (id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+
