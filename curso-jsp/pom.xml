@@ -37,6 +37,15 @@
 			<version>6.20.0</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+		<!-- a versão 3.17 é a única que funciona para relatorios em excel até o momento -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.17</version>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
