@@ -1,8 +1,10 @@
 package servlets;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.tomcat.jakartaee.commons.io.IOUtils;
@@ -161,24 +163,30 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			 request.setAttribute(dataFinal, "dataFinal");
 			 request.getRequestDispatcher("principal/reluser.jsp").forward(request, response);
 			 
-		 } else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("imprimirRelatorioPdf")) {
+		 } else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("imprimirRelatorioPDF")) {
 			 
 			 String dataInicial = request.getParameter("dataInicial");
 			 String dataFinal = request.getParameter("dataFinal");
 			 
 			 List<ModelLogin> modelLogins = null;
 			 
-			 if(dataInicial == null || dataInicial.isEmpty() && dataFinal == null || dataFinal.isEmpty()) {
+			 if (dataInicial == null || dataInicial.isEmpty() 
+					 && dataFinal == null || dataFinal.isEmpty()) {
 				 
-			modelLogins = daoUsuarioRepository.consultaUsuarioListRel(super.getUserLogado(request));
+				 modelLogins = daoUsuarioRepository.consultaUsuarioListRel(super.getUserLogado(request));
 				 
-			 } else {
+			 }else {
 				 
-				 modelLogins = daoUsuarioRepository.consultaUsuarioListRel(super.getUserLogado(request),dataInicial,dataFinal);
-				 
+				 modelLogins = daoUsuarioRepository
+						 .consultaUsuarioListRel(super.getUserLogado(request), dataInicial, dataFinal);
 			 }
 			 
-			 byte[] relatorio = new ReportUtil().gerarRelatorioPDF(modelLogins, "rel-user-jsp", request.getServletContext());
+			 
+			 HashMap<String, Object> params = new HashMap<String, Object>();
+			 params.put("PARAM_SUB_REPORT", request.getServletContext().getRealPath("relatorio") + File.separator);
+			 
+			 byte[] relatorio = new ReportUtil().gerarRelatorioPDF(modelLogins, "rel-user-jsp", params ,request.getServletContext());
+			 
 			 
 			 response.setHeader("Content-Disposition", "attachment;filename=arquivo.pdf");
 			 response.getOutputStream().write(relatorio);
